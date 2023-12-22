@@ -1,0 +1,1050 @@
+---
+format: 
+  revealjs:
+    #theme: ["theme/q-theme.scss"]
+    slide-number: c/t
+    logo: logo_cenaprece.jpeg
+    footer: "[github.com/fdzul](https://famous-puppy-8cffd3.netlify.app/mia/31_yucatan/#/)"
+    center-title-slide: true
+highlight-style: a11y
+---
+
+<h2>Manejo Integrado de las Arbovirosis<br>en México</h2>
+
+<h2>
+
+</h2>
+
+<hr>
+
+<h3>Felipe Dzul Manzanilla</h3>
+
+<h3>Fabián Correa-Morales</h3>
+
+<h3>
+
+</h3>
+
+<h4>Date: 2023-12-21 </h4>
+<h4>Update: 2023-12-21 </h4>
+
+<br>
+
+<h4>
+
+`r fontawesome::fa("github", "black")` [github.com/fdzul](https://fdzul.github.io/web_site_fadm/)
+
+![](chains_ticul_2023.jpg){.absolute top="155" left="550" width="750"}
+
+## [Manejo Integrado de los Vectores]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](def_mia.png)
+
+
+
+## [Manejo Integrado de Aedes]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](https://journals.plos.org/plosntds/article/figure/image?size=large&id=10.1371/journal.pntd.0006845.g001){.absolute top="100" width="800" height="550" right="120"}
+
+## [Manejo Integrado de Dengue en Asia]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](IRS_WPR2.png)
+
+## [MIA en México]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Step 1. load the dataset #####
+load("/Users/fdzul/Library/CloudStorage/OneDrive-Personal/automatic_read_sinave/8.RData/epid_channel_data.RData")
+
+# Step 2. extract the dengue cases of veracruz ####
+x <- x |>
+    dplyr::filter(DES_EDO_RES == "VERACRUZ") 
+
+y <- tibble::tibble(SEM = x$SEM,
+                    y = x$q25,
+                    arm = "Nuevo Paradigma")
+prob <- tibble::tibble(SEM = x$SEM,
+                       prob = rep(0, length(x$SEM)))
+
+# plot risk stratificaction  #####
+ggplot2::ggplot() +
+    ggplot2::geom_rect(ggplot2::aes(xmin = c(-Inf, 25), 
+                                    xmax = c(25, Inf), 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = c("#2EB67D", "#E01E5A"),
+                       alpha = .2) +
+    ggplot2::geom_rect(ggplot2::aes(xmin = 20, 
+                                    xmax = 25, 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = "orange",
+                       alpha = 0.8) +
+    ggplot2::geom_rect(ggplot2::aes(xmin = 25, 
+                                    xmax = 27, 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = "gray",
+                       alpha = 0.8) +
+    ggplot2::geom_rect(ggplot2::aes(xmin = 38, 
+                                    xmax = 40, 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = "#E01E5A",
+                       alpha = 0.8) +
+    ggplot2::geom_rect(ggplot2::aes(xmin = 40, 
+                                    xmax = 42, 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = "gray",
+                       alpha = 0.8) +
+    ggplot2::geom_vline(xintercept = 25,
+                        color = "gray", #"#36C5F0",
+                        size = 1,
+                        linetype = 3) +
+    ggplot2::geom_vline(xintercept = 20,
+                        color = "gray", #"#36C5F0",
+                        size = 1,
+                        linetype = 3) +
+    ggplot2::geom_line(data = x, 
+                       ggplot2::aes(x = SEM,
+                                    y = q75-10),
+                       col = "#E01E5A",
+                       size = 3) +
+    ggplot2::geom_line(data = y, 
+                       ggplot2::aes(x = SEM,
+                                    y = y),
+                       color = "#2EB67D", #"#36C5F0",
+                       size = 3) +
+    ggplot2::scale_x_continuous(breaks = seq(from = min(y$SEM), to = max(y$SEM), by = 4))+
+    ggplot2::ylab("Número de Casos") +
+    ggplot2::xlab("Semanas Epidemiológicas") +
+    ggplot2::annotate("text",
+                      label = "Control Proactivo",
+                      x = 10, 
+                      y = 450,
+                      #text = "risk",
+                      col = "#2EB67D",
+                      size = 6) +
+    ggplot2::annotate("text",
+                      label = "Escenarios Operativos \nbasados \nen \nTransmisión Persistente",
+                      x = 10, 
+                      y = 380,
+                      #text = "risk",
+                      col = "#2EB67D",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Control Reactivo",
+                      x = 47, 
+                      y = 450,
+                      #text = "risk",
+                      col = "#E01E5A",
+                      size = 6) +
+    ggplot2::annotate("text",
+                      label = "Escenarios Operativos \nbasados \nen \nTransmisión Activa",
+                      x = 47, 
+                      y = 380,
+                      #text = "risk",
+                      col = "#E01E5A",
+                      size = 4) +
+    ggplot2::geom_line(data = prob, 
+                       ggplot2::aes(x = SEM,
+                                    y = prob),
+                       color = "#36C5F0",
+                       size = 2)  +
+    ggplot2::annotate("text",
+                      label = "Acciones Específicas Básicas",
+                      x = 10, 
+                      y = 280,
+                      col = "gray",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Vigilancia Epidemiológica y Entomológica",
+                      x = 10, 
+                      y = 250,
+                      col = "#36C5F0",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Control de Probables",
+                      x = 10, 
+                      y = 230,
+                      col = "#36C5F0",
+                      size = 4) +
+  ggplot2::annotate("text",
+                      label = "Hotspots del Vector",
+                      x = 10, 
+                      y = 200,
+                      col = "#36C5F0",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Acciones Específicas de Soporte",
+                      x = 10, 
+                      y = 150,
+                      col = "gray",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Termonebulización,\n Nebulización, & \nEliminación Masiva de Criaderos",
+                      x = 10, 
+                      y = 110,
+                      col = "gray",
+                      size = 3) +
+  ggplot2::annotate("text",
+                      label = "Sin Control",
+                      x = 30, 
+                      y = 425,
+                      #text = "risk",
+                      col = "#E01E5A",
+                      size = 4) +
+  ggplot2::annotate("text",
+                      label = "Con Control",
+                      x = 35, 
+                      y = 105,
+                      col = "#2EB67D",
+                      size = 4) +
+  ggplot2::annotate(geom ="text",
+                      label = "Rociado Residual Intradomiciliario & Control Larvario",
+                      x = 22, 
+                      y = 220,
+                    angle = 90,
+                      col = "white",
+                      size = 4) +
+    ggplot2::annotate(geom ="text",
+                      label = "ULV Fria o Caliente",
+                      x = 26, 
+                      y = 220,
+                      angle = 90,
+                      col = "white",
+                      size = 4) +
+  ggplot2::annotate(geom ="text",
+                      label = "Control Larvario",
+                      x = 39, 
+                      y = 220,
+                    angle = 90,
+                      col = "white",
+                      size = 4) +
+    ggplot2::annotate(geom ="text",
+                      label = "ULV Fria o Caliente",
+                      x = 41, 
+                      y = 220,
+                      angle = 90,
+                      col = "white",
+                      size = 4)
+
+```
+
+
+
+## [Estratifición del Riesgo]{style="color:#FF5A5F;"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r}
+DiagrammeR::grViz("digraph {
+                  # graph definitions
+  graph [layout = dot, rankdir = TB]
+  
+  # node definitions
+  node [shape = rectangle, style = filled, color = grey, 
+  nodesep = 1, 
+  fixedsize = false, 
+  width = 1.7] 
+  
+  # edge definition
+  edge [color = grey, arrowhead = normal, arrowtail = dot]
+  
+  ##### fuentes de información
+  
+  inf [label = 'Bases de Datos',  fillcolor =  '#DB4437', color = 'white', fontcolor = 'white']
+  
+  
+  ##### datasets
+  
+  ento [label = 'Vigilancia Entomológica',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  epi [label = 'Vigilancia Epidemiológica',  fillcolor =  ' #0F9D58', color = 'white', fontcolor = 'white']
+  clim [label = 'Datos Clímaticos',  fillcolor =  ' #0F9D58', color = 'white', fontcolor = 'white']
+  socio [label = 'Datos Sociodemográficos',  fillcolor =  ' #0F9D58', color = 'white', fontcolor = 'white']
+  land [label = 'Cobertura Terrestre',  fillcolor =  ' #0F9D58', color = 'white', fontcolor = 'white']
+  mov [label = 'Datos de Movilidad',  fillcolor =  ' #0F9D58', color = 'white', fontcolor = 'white']
+ 
+ ### 
+ ana [label = 'Estadística Multivariada',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+ 
+ ### 
+ indice [label = 'Indice de Riesgo',  fillcolor =  'DodgerBlue', color = 'white', fontcolor = 'white']
+ 
+ ###
+ hotspots [label = 'Hotspots',  fillcolor =  '#E01E5A', color = 'white', fontcolor = 'white']
+ 
+ ##### define the relation
+ 
+ inf -> {ento, epi, clim, socio, land, mov} -> ana -> indice -> hotspots
+ 
+ 
+}")
+```
+
+
+## [Estratifición del Riesgo]{style="color:#FF5A5F;"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r  echo=FALSE, warning=FALSE, message=FALSE}
+
+DiagrammeR::grViz("digraph {
+                  
+  # graph definitions
+  graph [layout = dot, rankdir = TB]
+  
+  
+   # node definitions
+  node [shape = rectangle, 
+  style = filled, 
+  color = grey, 
+  nodesep = 0.1,
+  fixedsize = true, 
+  width = 2.5]
+  
+  
+  # edge definition
+  edge [color = grey, arrowhead = normal, arrowtail = dot]
+  
+  ##### epidemiological data
+  
+  localidad [label = 'Localidad',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  
+  loc_endemica [label = 'Endémica',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  loc_no_endemica [label = 'No Endémica',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  
+  
+  sin_trans [label = 'Sin Transmisión',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  con_trans [label = 'Con Transmisión',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  
+  trans_epi [label = 'Epidémica',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  trans_no_epi [label = 'No Epidémica',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  
+  todo [label = 'Todo El Año',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  segundo_semestre [label = 'Segundo Semetre',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  primer_semestre [label = 'Primer Semestre',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+ 
+  node [shape = circle,
+        fixedsize = true,
+        width = .9]
+  A [label = 'A',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+  B [label = 'B',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+  C [label = 'C',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+  D [label = 'D',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+  E [label = 'E',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+ 
+  
+  localidad -> {loc_no_endemica loc_endemica}
+  loc_endemica -> {sin_trans con_trans}
+  con_trans -> {trans_epi trans_no_epi}
+  
+  trans_epi -> {todo, segundo_semestre primer_semestre}
+  
+  sin_trans -> A
+  trans_no_epi -> B
+  primer_semestre -> C
+  segundo_semestre -> D
+  todo -> E
+  
+  
+}")
+
+```
+
+
+## [Donde Aplicar en Arbovirosis]{style="color:#FF5A5F;"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r}
+# Propuesta ####
+DiagrammeR::grViz("digraph {
+                  # graph definitions
+  graph [layout = dot, rankdir = TB]
+  
+  # node definitions
+  node [shape = rectangle, 
+  style = filled, 
+  color = grey, 
+  nodesep = .5,
+  fixedsize = true, 
+  width = 5.2]
+  
+  
+  # edge definition
+  edge [color = grey, arrowhead = normal, arrowtail = dot]
+  
+  ##### epidemiological data
+  
+  epi [label = 'Vigilancia Epidemiológica',  fillcolor =  '#682D63', color = 'white', fontcolor = 'white']
+  ento [label = 'Vigilancia Entomológica',  fillcolor =  '#682D63', color = 'white', fontcolor = 'white']
+  
+  
+  node [shape = rectangle, 
+  style = filled, 
+  color = grey, 
+  nodesep = .5,
+  fixedsize = true, 
+  width = 2.5]
+  
+  
+  
+  data_historic [label = 'Datos Históricos',  fillcolor =  'gray', color = 'white', fontcolor = 'black']
+  datos_actuales [label = 'Datos Recientes',  fillcolor =  'gray', color = 'white', fontcolor = 'black']
+  
+  
+  ##### entomologica data
+  ovis_historic [label = 'Datos Históricos',  fillcolor =  'gray', color = 'white', fontcolor = 'black']
+  ovis_actuales [label = 'Datos Recientes',  fillcolor =  'gray', color = 'white', fontcolor = 'black']
+  
+  
+  
+  ##### transmision
+  
+  trans_persistente [label = 'Transmisión Persistente',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  trans_activa [label = 'Transmisión Activa',  fillcolor =  ' #0F9D58', color = 'white', fontcolor = 'white']
+  
+  abun_persistente1 [label = 'Abundancia Persistente',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+  abun_persistente2 [label = 'Abundancia Reciente',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+
+  
+  
+  analisis_espacial1 [label = 'Análisis Espacial',  fillcolor =  'gray', color = 'white', fontcolor = 'black']
+  analisis_espacial2 [label = 'Análisis Espacial',  fillcolor =  'gray', color = 'white', fontcolor = 'black']
+  analisis_espacial3 [label = 'Análisis Espacial',  fillcolor =  'gray', color = 'white', fontcolor = 'black']
+  analisis_espacial4 [label = 'Análisis Espacial',  fillcolor =  'gray', color = 'white', fontcolor = 'black']
+  
+
+ # Spatial data
+ 
+ datos_espaciales1 [label = 'Datos Espaciales',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+ datos_espaciales2 [label = 'Datos Espaciales',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+ datos_espaciales3 [label = 'Datos Espaciales',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+ datos_espaciales4 [label = 'Datos Espaciales',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+ 
+ 
+ 
+ areal_data [label = 'Areal Data',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+ pp_data [label = 'Point Pattern Data',  fillcolor =  ' #0F9D58', color = 'white', fontcolor = 'white']
+ geo_data1 [label = 'Geostatistical Data',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+ geo_data2 [label = 'Geostatistical Data',  fillcolor =  '#0F9D58', color = 'white', fontcolor = 'white']
+     
+ 
+ # Análisis 
+ 
+ g_star [label = 'Getis & Ord Statistics',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+ hotspots [label = 'Hotspots',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+ knox [label = 'Knox Test',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+ cadenas [label = 'Cadenas de Transmisión',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+ 
+inla1 [label = 'SPDE-INLA',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+ 
+hotspots2 [label = 'Hotspots',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+
+
+inla2 [label = 'SPDE-INLA',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+hotspots3 [label = 'Hotspots',  fillcolor =  'orange', color = 'white', fontcolor = 'black']
+
+ 
+ # escenarios
+node [shape = rectangle, 
+  style = filled, 
+  color = grey, 
+  nodesep = .5,
+  fixedsize = true, 
+  width = 10.8]
+risk [label = 'Escenarios Operativos ó Epidemiológicos',  fillcolor =  '#0E7C7B', color = 'white', fontcolor = 'white']
+acciones [label = 'Acciones de Prevención y Control',  fillcolor =  '#0E7C7B', color = 'white', fontcolor = 'white']
+
+node [shape = rectangle, 
+  style = filled, 
+  color = grey, 
+  nodesep = .5,
+  fixedsize = false, 
+  width = 5.3]
+fase1 [label = 'Fase I',  fillcolor =  '#17BEBB', color = 'white', fontcolor = 'black']
+fase2 [label = 'Fase II',  fillcolor =  '#17BEBB', color = 'white', fontcolor = 'black']
+
+risk2 [label = 'Transmisión Persistente & Abundancia Persistente',  fillcolor =  '#880044', color = 'white', fontcolor = 'white']
+risk3 [label = 'Transmisión Activa & Abundancia Reciente',  fillcolor =  '#88004', color = 'white', fontcolor = 'white']
+
+# escenarios
+node [shape = rectangle, 
+  style = filled, 
+  color = grey, 
+  nodesep = .5,
+  fixedsize = true, 
+  width = 10.8]
+ fase3 [label = 'Fase III',  fillcolor =  '#17BEBB', color = 'white', fontcolor = 'black']
+
+
+
+#
+node [shape = rectangle, 
+  style = filled, 
+  color = grey, 
+  nodesep = .2,
+  fixedsize = true, 
+  width = 1.1]
+
+bajo1 [label = 'Bajo',  fillcolor =  '#36C5F0', color = 'white', fontcolor = 'black']
+medio1 [label = 'Medio',  fillcolor =  '#2EB67D', color = 'white', fontcolor = 'black']
+alto1 [label = 'Alto',  fillcolor =  '#ECB22E', color = 'white', fontcolor = 'black']
+altisimo1 [label = 'Altisimo',  fillcolor =  '#E01E5A', color = 'white', fontcolor = 'white']
+
+bajo2 [label = 'Bajo',  fillcolor =  '#36C5F0', color = 'white', fontcolor = 'black']
+medio2 [label = 'Medio',  fillcolor =  '#2EB67D', color = 'white', fontcolor = 'black']
+alto2 [label = 'Alto',  fillcolor =  '#ECB22E', color = 'white', fontcolor = 'black']
+altisimo2 [label = 'Altisimo',  fillcolor =  '#E01E5A', color = 'white', fontcolor = 'white']
+
+
+ ##### define the relation
+ 
+ epi -> {data_historic  datos_actuales}
+ data_historic -> trans_persistente -> analisis_espacial1 -> datos_espaciales1
+ datos_actuales -> trans_activa -> analisis_espacial2 -> datos_espaciales2
+ 
+
+ datos_espaciales1 -> areal_data -> g_star -> hotspots 
+ datos_espaciales2 -> pp_data -> knox -> cadenas 
+ 
+ ento -> {ovis_historic  ovis_actuales} 
+ ovis_historic -> abun_persistente1 -> analisis_espacial3 -> datos_espaciales3 -> geo_data1
+ ovis_actuales -> abun_persistente2 -> analisis_espacial4 -> datos_espaciales4 -> geo_data2
+ geo_data1 -> inla1 -> hotspots2
+ geo_data2 -> inla2 -> hotspots3
+
+##
+{hotspots, cadenas, hotspots2 hotspots3} -> risk -> {fase1 fase2}
+
+fase1 -> risk2
+fase2 -> risk3
+risk2 -> {bajo1, medio1 alto1 altisimo1} -> fase3 
+risk3 -> {bajo2, medio2 alto2 altisimo2} -> fase3 -> acciones
+
+}")
+
+```
+
+
+## [Transmisión Persistente (Hotspots)]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+<html>
+<head>
+```{=html}
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  padding: 5px;
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 5px;
+  font-size: 30px;
+  text-align: center;
+}
+</style>
+```
+</head>
+<body>
+<h1>
+</h1>
+<p>
+</p>
+
+::: grid-container
+
+::: grid-item
+Localidad
+:::
+
+::: grid-item
+Transmisión
+:::
+
+::: grid-item
+Vector
+:::
+
+::: grid-item
+Escenarios
+:::
+
+::: grid-item
+Mérida
+:::
+
+::: grid-item
+```{r hotspots_cases_merida, out.height="110%", out.width="110%"}
+load("~/Library/CloudStorage/Dropbox/hotspots_2022/8.RData/cases_hotspots_agebs19.RData")
+library(magrittr)
+cases_hotspots_agebs19 |>
+    sf::st_make_valid() |>
+    dplyr::filter(loc == "Merida") |>
+denhotspots::staticmap_intensity(pal = rcartocolor::carto_pal,
+                                 pal_name = TRUE,
+                                 name = "OrYel",
+                                 breaks = 1,
+                                 dir_pal = -1,
+                                 x_leg = 0.5,
+                                 y_leg = 0.1,
+                                 ageb = TRUE)
+```
+:::
+
+::: grid-item
+```{r hotspots_vector_merida, out.height="110%", out.width="110%"}
+source("~/Library/CloudStorage/Dropbox/r_developments/r_talks/2023/reunion_interstatal_2023/reunion_quintana_roo/functions/intensity_eggs.R")
+load("~/Library/CloudStorage/OneDrive-Personal/proyects/hotspots_eggs/8.RData/31_yucatan/betas/31_yucatan_zinb1_betas.RData")
+betas_31_yucatan |>
+    dplyr::filter(year == 2019) |>
+    intensity_eggs(locality = "Mérida",
+                    cve_ent = "31",
+                    palette = rcartocolor::carto_pal,
+                    name = "SunsetDark")
+```
+:::
+
+::: grid-item
+```{r risk_merida, out.height="110%", out.width="110%"}
+# load the dengue cases hotspots
+load("~/Library/CloudStorage/Dropbox/hotspots_2022/8.RData/cases_hotspots_agebs19.RData")
+hotspots <- cases_hotspots_agebs19 |>
+    sf::st_make_valid()
+# load the betas 
+load("~/Library/CloudStorage/OneDrive-Personal/proyects/hotspots_eggs/8.RData/31_yucatan/betas/31_yucatan_zinb1_betas.RData")
+
+###
+source("~/Library/CloudStorage/Dropbox/r_developments/r_new_functions/3.Functions/risk_agebs.R")
+source("~/Library/CloudStorage/Dropbox/r_developments/r_new_functions/3.Functions/risk_map.R")
+risk <- risk_agebs(spde_model = betas_31_yucatan,
+                   hotspots = cases_hotspots_agebs19,
+                   locality = "Mérida",
+                   cve_ent = "31",
+                   intensity_perc = 25)
+risk_map(risk = risk, staticmap = TRUE) 
+```
+:::
+
+:::
+
+</body>
+</html>
+
+
+## [Transmisión Activa]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+<html>
+<head>
+```{=html}
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  padding: 5px;
+}
+
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 5px;
+  font-size: 30px;
+  text-align: center;
+}
+</style>
+```
+</head>
+<body>
+<h1>
+</h1>
+<p>
+</p>
+
+::: grid-container
+
+::: grid-item
+Localidad
+:::
+
+::: grid-item
+Transmisión
+:::
+
+::: grid-item
+Vector
+:::
+
+::: grid-item
+Escenarios
+:::
+
+::: grid-item
+Mérida
+:::
+
+::: grid-item
+```{r cadenas_merida_2023}
+if(as.vector(Sys.info()["sysname"]) == "Darwin"){
+    load("~/Library/CloudStorage/OneDrive-Personal/proyects/geocoding_mex/2023/9.geocoded_dataset/dengue_mx_2023.RData")
+    
+} else if(as.vector(Sys.info()["sysname"]) == "Windows"){
+    load("D:/OneDrive/proyects/geocoding_mex/2023/9.geocoded_dataset/dengue_mx_2023.RData")
+    
+} else if(as.vector(Sys.info()["sysname"]) == "Linux"){
+    
+}
+
+# 2. aplicar la prueba de knox
+z <- z |>
+    as.data.frame() |>
+    sf::st_as_sf(coords = c("long", "lat"),
+                 crs = 4326) |>
+    dplyr::mutate(onset = lubridate::ymd(FEC_INI_SIGNOS_SINT)) |>
+  dplyr::filter(ESTATUS_CASO == 2)
+
+loc <- rgeomex::extract_locality(cve_edo = "31",
+                                 locality = "Mérida")
+library(magrittr)
+denhotspots::knox(x = z[loc,], 
+                  crs = "+proj=eqc", 
+                  ds = 400, 
+                  dt = 20, 
+                  sym = 1000, 
+                  sp_link = FALSE,
+                  planar_coord = FALSE) |>
+    denhotspots::space_time_link_map(
+        locality = "Merida",
+        cve_edo = "31",
+        maptype = "staticmap",
+        facetmap = FALSE)
+```
+:::
+
+::: grid-item
+```{r hotspots_vector_merida_2023}
+load("~/Library/CloudStorage/OneDrive-Personal/proyects/talks/reunion_inter_estatal/8.RData/eggs_hotspots_2023.RData")
+deneggs::eggs_hotspots_intensity_map(spde_betas = merida$betas,
+                                     years = 2023,
+                                     locality = "Merida",
+                                     cve_ent = "31",
+                                     palette = rcartocolor::carto_pal,
+                                     name = "SunsetDark")
+```
+
+:::
+
+::: grid-item
+```{r risk_escenario_actual_merida}
+if(as.vector(Sys.info()["sysname"]) == "Darwin"){
+    load("~/Library/CloudStorage/OneDrive-Personal/proyects/geocoding_mex/2023/9.geocoded_dataset/dengue_mx_2023.RData")
+    load("~/Library/CloudStorage/OneDrive-Personal/proyects/talks/reunion_inter_estatal/8.RData/eggs_hotspots_2023.RData")
+    source("~/Library/CloudStorage/Dropbox/r_developments/r_talks/2023/reunion_interstatal_2023/reunion_quintana_roo/functions/risk_transmission_activa.R")
+    
+} else if(as.vector(Sys.info()["sysname"]) == "Windows"){
+    load("D:/OneDrive/proyects/geocoding_mex/2023/9.geocoded_dataset/dengue_mx_2023.RData")
+    
+} else if(as.vector(Sys.info()["sysname"]) == "Linux"){
+    
+}
+z <- z |>
+  dplyr::filter(ESTATUS_CASO == 2)
+
+risk_transmision_activa(betas = merida$betas,
+                        geocoded_data =  z,
+                        cve_edo = "31",
+                        status_caso = 2,
+                        locality = "Merida")
+```
+:::
+
+:::
+
+</body>
+</html>
+
+## [Escenarios de la Transmisión]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r risk_escenario_actual, out.height="100%", out.width="100%"}
+if(as.vector(Sys.info()["sysname"]) == "Darwin"){
+    load("~/Library/CloudStorage/OneDrive-Personal/proyects/geocoding_mex/2023/9.geocoded_dataset/dengue_mx_2023.RData")
+    load("~/Library/CloudStorage/OneDrive-Personal/proyects/talks/reunion_inter_estatal/8.RData/eggs_hotspots_2023.RData")
+    source("~/Library/CloudStorage/Dropbox/r_developments/r_talks/2023/reunion_interstatal_2023/reunion_quintana_roo/functions/risk_transmission_activa.R")
+    
+} else if(as.vector(Sys.info()["sysname"]) == "Windows"){
+    load("D:/OneDrive/proyects/geocoding_mex/2023/9.geocoded_dataset/dengue_mx_2023.RData")
+    
+} else if(as.vector(Sys.info()["sysname"]) == "Linux"){
+    
+}
+
+z <- z |>
+  dplyr::filter(ESTATUS_CASO == 2)
+b <- risk_transmision_activa(betas = merida$betas,
+                        geocoded_data =  z,
+                        cve_edo = "31",
+                        status_caso = 2,
+                        locality = "Merida") +
+  ggplot2::ggtitle("Transmisión Activa")
+
+# load the dengue cases hotspots
+load("~/Library/CloudStorage/Dropbox/hotspots_2022/8.RData/cases_hotspots_agebs19.RData")
+hotspots <- cases_hotspots_agebs19 |>
+    sf::st_make_valid()
+# load the betas 
+load("~/Library/CloudStorage/OneDrive-Personal/proyects/hotspots_eggs/8.RData/31_yucatan/betas/31_yucatan_zinb1_betas.RData")
+
+###
+source("~/Library/CloudStorage/Dropbox/r_developments/r_new_functions/3.Functions/risk_agebs.R")
+source("~/Library/CloudStorage/Dropbox/r_developments/r_new_functions/3.Functions/risk_map.R")
+merida_risk <- risk_agebs(spde_model = betas_31_yucatan,
+                   hotspots = cases_hotspots_agebs19,
+                   locality = "Mérida",
+                   cve_ent = "31",
+                   intensity_perc = 25)
+a <- risk_map(risk = merida_risk, 
+              staticmap = TRUE) +
+  ggplot2::ggtitle("Transmisión Persistente")
+
+
+library(patchwork)
+a | b
+```
+
+## [Escenarios de la Transmisión]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![](transmision_persistente.jpg){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](transmision_activa.jpg){fig-align="center"}
+:::
+
+::::
+
+## [Biología del Vector]{style="color:#FF5A5F;"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+![](life_cycle_culicidae2.png){fig-align="center"width=70%}
+
+
+## [MIA en México]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# Step 1. load the dataset #####
+load("/Users/fdzul/Library/CloudStorage/OneDrive-Personal/automatic_read_sinave/8.RData/epid_channel_data.RData")
+
+# Step 2. extract the dengue cases of veracruz ####
+x <- x |>
+    dplyr::filter(DES_EDO_RES == "VERACRUZ") 
+
+y <- tibble::tibble(SEM = x$SEM,
+                    y = x$q25,
+                    arm = "Nuevo Paradigma")
+prob <- tibble::tibble(SEM = x$SEM,
+                       prob = rep(0, length(x$SEM)))
+
+# plot risk stratificaction  #####
+ggplot2::ggplot() +
+    ggplot2::geom_rect(ggplot2::aes(xmin = c(-Inf, 25), 
+                                    xmax = c(25, Inf), 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = c("#2EB67D", "#E01E5A"),
+                       alpha = .2) +
+    ggplot2::geom_rect(ggplot2::aes(xmin = 20, 
+                                    xmax = 25, 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = "orange",
+                       alpha = 0.8) +
+    ggplot2::geom_rect(ggplot2::aes(xmin = 25, 
+                                    xmax = 27, 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = "gray",
+                       alpha = 0.8) +
+    ggplot2::geom_rect(ggplot2::aes(xmin = 38, 
+                                    xmax = 40, 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = "#E01E5A",
+                       alpha = 0.8) +
+    ggplot2::geom_rect(ggplot2::aes(xmin = 40, 
+                                    xmax = 42, 
+                                    ymin = -Inf, 
+                                    ymax = Inf),
+                       fill = "gray",
+                       alpha = 0.8) +
+    ggplot2::geom_vline(xintercept = 25,
+                        color = "gray", #"#36C5F0",
+                        size = 1,
+                        linetype = 3) +
+    ggplot2::geom_vline(xintercept = 20,
+                        color = "gray", #"#36C5F0",
+                        size = 1,
+                        linetype = 3) +
+    ggplot2::geom_line(data = x, 
+                       ggplot2::aes(x = SEM,
+                                    y = q75-10),
+                       col = "#E01E5A",
+                       size = 3) +
+    ggplot2::geom_line(data = y, 
+                       ggplot2::aes(x = SEM,
+                                    y = y),
+                       color = "#2EB67D", #"#36C5F0",
+                       size = 3) +
+    ggplot2::scale_x_continuous(breaks = seq(from = min(y$SEM), to = max(y$SEM), by = 4))+
+    ggplot2::ylab("Número de Casos") +
+    ggplot2::xlab("Semanas Epidemiológicas") +
+    ggplot2::annotate("text",
+                      label = "Control Proactivo",
+                      x = 10, 
+                      y = 450,
+                      #text = "risk",
+                      col = "#2EB67D",
+                      size = 6) +
+    ggplot2::annotate("text",
+                      label = "Escenarios Operativos \nbasados \nen \nTransmisión Persistente",
+                      x = 10, 
+                      y = 380,
+                      #text = "risk",
+                      col = "#2EB67D",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Control Reactivo",
+                      x = 47, 
+                      y = 450,
+                      #text = "risk",
+                      col = "#E01E5A",
+                      size = 6) +
+    ggplot2::annotate("text",
+                      label = "Escenarios Operativos \nbasados \nen \nTransmisión Activa",
+                      x = 47, 
+                      y = 380,
+                      #text = "risk",
+                      col = "#E01E5A",
+                      size = 4) +
+    ggplot2::geom_line(data = prob, 
+                       ggplot2::aes(x = SEM,
+                                    y = prob),
+                       color = "#36C5F0",
+                       size = 2)  +
+    ggplot2::annotate("text",
+                      label = "Acciones Específicas Básicas",
+                      x = 10, 
+                      y = 280,
+                      col = "gray",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Vigilancia Epidemiológica y Entomológica",
+                      x = 10, 
+                      y = 250,
+                      col = "#36C5F0",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Control de Probables",
+                      x = 10, 
+                      y = 230,
+                      col = "#36C5F0",
+                      size = 4) +
+  ggplot2::annotate("text",
+                      label = "Hotspots del Vector",
+                      x = 10, 
+                      y = 200,
+                      col = "#36C5F0",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Acciones Específicas de Soporte",
+                      x = 10, 
+                      y = 150,
+                      col = "gray",
+                      size = 4) +
+    ggplot2::annotate("text",
+                      label = "Termonebulización,\n Nebulización, & \nEliminación Masiva de Criaderos",
+                      x = 10, 
+                      y = 110,
+                      col = "gray",
+                      size = 3) +
+  ggplot2::annotate("text",
+                      label = "Sin Control",
+                      x = 30, 
+                      y = 425,
+                      #text = "risk",
+                      col = "#E01E5A",
+                      size = 4) +
+  ggplot2::annotate("text",
+                      label = "Con Control",
+                      x = 35, 
+                      y = 105,
+                      col = "#2EB67D",
+                      size = 4) +
+  ggplot2::annotate(geom ="text",
+                      label = "Rociado Residual Intradomiciliario & Control Larvario",
+                      x = 22, 
+                      y = 220,
+                    angle = 90,
+                      col = "white",
+                      size = 4) +
+    ggplot2::annotate(geom ="text",
+                      label = "ULV Fria o Caliente",
+                      x = 26, 
+                      y = 220,
+                      angle = 90,
+                      col = "white",
+                      size = 4) +
+  ggplot2::annotate(geom ="text",
+                      label = "Control Larvario",
+                      x = 39, 
+                      y = 220,
+                    angle = 90,
+                      col = "white",
+                      size = 4) +
+    ggplot2::annotate(geom ="text",
+                      label = "ULV Fria o Caliente",
+                      x = 41, 
+                      y = 220,
+                      angle = 90,
+                      col = "white",
+                      size = 4)
+
+```
+
+
+## [Literarura]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+## [Manuales y Cursos]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+
+
+
+## [Dios Botic]{style="color:#003300;"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+-   ***Bio*** : [https://fdzul.github.io/web_site_fadm/]()
+
+-   ***email*** : [felipe.dzul.m@gmail.com]()
+
+-   ***celular*** : [8139945623, 9999580167]()
+
+-   ***slides***: []()
+
+
+
+
+
+
