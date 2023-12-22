@@ -4,7 +4,7 @@ format:
     #theme: ["theme/q-theme.scss"]
     slide-number: c/t
     logo: logo_cenaprece.jpeg
-    footer: "[github.com/fdzul](https://famous-puppy-8cffd3.netlify.app/mia/31_yucatan/#/)"
+    footer: "[github.com/fdzul](https://rococo-pothos-8ae204.netlify.app/talks/mia_mx/#/)"
     center-title-slide: true
 highlight-style: a11y
 ---
@@ -1022,14 +1022,47 @@ ggplot2::ggplot() +
 
 ```
 
-
-## [Literarura]{style="color:#003300"}
+## [Control de Probables]{style="color:#003300"}
 <hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+![](control_probables.png){fig-align="center"width=70%}
+
+## [Hotspots]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+## [Mapas de Calor]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+## [Rociado Residual Intradomiciliario]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+## [Nebulización Fría]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+## [Nebulización Térmica]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+
+## [Directrices Internacionales]{style="color:#003300"}
+<hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
+
+[Global strategic framework for integrated vector management](https://www.who.int/publications/i/item/WHO-CDS-CPE-PVC-2004.10)
+
+[Handbok for Integrated Vector Management](https://www.who.int/publications/i/item/9789241502801)
+
+[Handbook for Integrated Vector Management in the Americas](https://iris.paho.org/handle/10665.2/51759)
+
+[Best Practices for Integrated Mosquito Management](https://www.mosquito.org/assets/pdf/hr_november_2021_amca_bmp_ma/)
+
+[AMCA's Best Practices for Integrated Mosquito Management Virtual Training Program](https://amca.ce21.com/item/best-practices-mosquito-management)
+
 
 ## [Manuales y Cursos]{style="color:#003300"}
 <hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
 
+[Análisis Espacial del Dengue en R](https://fdzul.github.io/spatial_analysis_dengue_R/)
 
+[Manual para la identificación de los hotspots en áreas úrbanas](https://fdzul.github.io/manual_hotspots/)
 
 
 ## [Dios Botic]{style="color:#003300;"}
@@ -1039,9 +1072,9 @@ ggplot2::ggplot() +
 
 -   ***email*** : [felipe.dzul.m@gmail.com]()
 
--   ***celular*** : [8139945623, 9999580167]()
+-   ***celular*** : [9999580167]()
 
--   ***slides***: []()
+-   ***slides***: [](https://rococo-pothos-8ae204.netlify.app/talks/mia_mx/#/)
 
 
 
