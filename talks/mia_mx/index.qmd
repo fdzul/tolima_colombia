@@ -26,7 +26,7 @@ highlight-style: a11y
 </h3>
 
 <h4>Date: 2023-12-21 </h4>
-<h4>Update: 2023-12-21 </h4>
+<h4>Update: 2023-12-22 </h4>
 
 <br>
 
@@ -1025,7 +1025,7 @@ ggplot2::ggplot() +
 ## [Control de Probables]{style="color:#003300"}
 <hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
 
-![](control_probables.png){fig-align="center"width=70%}
+![](control_probables.png){fig-align="center"}
 
 ## [Hotspots]{style="color:#003300"}
 <hr style="height:2px;border-width:0;color:#330019;background-color:#330019">
@@ -1074,7 +1074,7 @@ ggplot2::ggplot() +
 
 -   ***celular*** : [9999580167]()
 
--   ***slides***: [](https://rococo-pothos-8ae204.netlify.app/talks/mia_mx/#/)
+-   ***slides***: [https://rococo-pothos-8ae204.netlify.app/talks/mia_mx/#/]()
 
 
 
